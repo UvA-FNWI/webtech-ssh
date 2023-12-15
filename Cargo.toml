@@ -1,0 +1,35 @@
+[package]
+name = "webtech-ssh"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+opt-level = 'z'
+lto = true
+codegen-units = 1
+panic = 'abort'
+strip = true
+
+# In order to produce a statically linked yet reasonably small binary, we:
+# - use rustls instead of openssl
+# - compile for x86_64-unknown-linux-musl instead of -gnu
+#
+# On macOS, the standard aarch64-apple-darwin and x86_64-apple-darwin targets
+# are sufficient.
+[dependencies]
+reqwest = { version = "0.11", features = [
+    "json",
+    "rustls-tls",
+], default-features = false }
+ssh-key = { version = "0.6.2", features = ["crypto", "ed25519"] }
+clap = { version = "4.4.8" }
+rand = "0.8.5"
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+anyhow = { version = "1.0", features = ["backtrace"] }
+hyper = { version = "1", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
+http-body-util = "0.1"
+hyper-util = { version = "0.1", features = ["full"] }
+url = "2"
+colored = "2"
