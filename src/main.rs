@@ -20,10 +20,10 @@ use colored::*;
 
 type HTTPClient = reqwest::Client;
 
-const CERTIFICATE_REQ_URL: &str = "http://localhost:8080/sign";
-const USER_INFO_URL: &str = "http://localhost:8080/user_info";
-const HOST_CA_URL: &str = "http://localhost:8080/host_ca";
-const LOGIN_URL: &str = "http://localhost:8080/login";
+const CERTIFICATE_REQ_URL: &str = "https://webtech-admin.datanose.nl/sign";
+const USER_INFO_URL: &str = "https://webtech-admin.datanose.nl/user_info";
+const HOST_CA_URL: &str = "https://webtech-admin.datanose.nl/host_ca";
+const LOGIN_URL: &str = "https://webtech-admin.datanose.nl/login_api";
 const CA_TRUSTED_DOMAINS: &str = "*.webtech-uva.nl";
 
 const KEY_NAME: &str = "id_webtech";
