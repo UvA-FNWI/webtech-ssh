@@ -108,6 +108,10 @@ async fn get_user_certificate(
         bail!("Unauthorized; invalid token? Please try again.");
     }
 
+    if response.status() != StatusCode::OK {
+        bail!("Unable to request certificate; please try again.")
+    }
+
     let text = response.text().await?;
 
     let cert = Certificate::from_openssh(&text)?;
@@ -120,6 +124,10 @@ async fn get_host_ca_key(client: &HTTPClient, token: &str) -> anyhow::Result<Pub
     println!("{}", "Getting the host CA key...".dimmed());
     let response = client.get(HOST_CA_URL).bearer_auth(token).send().await?;
 
+    if response.status() != StatusCode::OK {
+        bail!("Unable to request host CA key; please try again.")
+    }
+
     let text = response.text().await?;
 
     let key = PublicKey::from_openssh(&text)?;
@@ -129,6 +137,11 @@ async fn get_host_ca_key(client: &HTTPClient, token: &str) -> anyhow::Result<Pub
 
 async fn get_user_info(client: &HTTPClient, token: &str) -> anyhow::Result<UserInfo> {
     let response = client.get(USER_INFO_URL).bearer_auth(token).send().await?;
+
+    if response.status() != StatusCode::OK {
+        bail!("Unable to request user info; please try again.")
+    }
+
     let info = response.json::<UserInfo>().await?;
 
     Ok(info)
