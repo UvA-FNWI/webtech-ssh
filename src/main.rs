@@ -35,7 +35,7 @@ struct UserInfo {
     pub first_name: String,
     pub last_name: String,
     pub username: String,
-    pub group: Option<String>,
+    pub groups: Vec<String>,
 }
 
 /// Get the access token for the SSH-CA server
@@ -152,7 +152,10 @@ fn trust_host_ca_key(home: &Path, ca_key: &PublicKey) -> anyhow::Result<()> {
     println!("{}", "Trusting host CA key...".dimmed());
 
     let ca_key_encoded = ca_key.to_openssh()?;
-    let entry = format!("@cert-authority {} {}", CA_TRUSTED_DOMAINS, ca_key_encoded);
+    let entry = format!(
+        "\n@cert-authority {} {}",
+        CA_TRUSTED_DOMAINS, ca_key_encoded
+    );
 
     let known_hosts_path = home.join(".ssh").join("known_hosts");
 
@@ -231,7 +234,7 @@ fn enable_webtech_key(home: &Path, key_path: &Path) -> anyhow::Result<()> {
         .map_err(|_| anyhow!("ssh config is not readable"))?;
 
     let entry = format!(
-        "Match host=\"{}\"\n    IdentityFile {}",
+        "\nMatch host=\"{}\"\n    IdentityFile {}",
         CA_TRUSTED_DOMAINS,
         key_path.to_str().ok_or(anyhow!("invalid utf-8 key path"))?
     );
@@ -270,17 +273,18 @@ async fn main() -> anyhow::Result<()> {
 
     let output: String;
 
-    if let Some(group) = user_info.group {
+    if user_info.groups.len() == 1 {
         output = format!(
             "\nDone! You are all set up to connect to your server.\n\
-             Your username is {}; to connect to a server, run 'ssh {}@{}.webtech-uva.nl'.",
-            user_info.username, user_info.username, group
+             Your username is {}; to connect to your server, run 'ssh {}@{}.webtech-uva.nl'.",
+            user_info.username, user_info.username, user_info.groups[0]
         );
     } else {
         output = format!(
             "\nDone! You are all set up to connect to your servers.\n\
-             Your username is {}; to connect to a server, run 'ssh {}@<group>.webtech-uva.nl', filling in the appropriate group id.",
-            user_info.username, user_info.username
+             Your username is {}; to connect to a server, run 'ssh {}@<group>.webtech-uva.nl', filling in the appropriate group name.\n\
+             Your groups are: {}",
+            user_info.username, user_info.username, user_info.groups.join(", ")
         );
     }
     println!("{}", output.green().bold());
