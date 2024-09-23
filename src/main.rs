@@ -234,7 +234,7 @@ fn enable_webtech_key(home: &Path, key_path: &Path) -> anyhow::Result<()> {
         .map_err(|_| anyhow!("ssh config is not readable"))?;
 
     let entry = format!(
-        "\nMatch host=\"{}\"\n    IdentityFile {}",
+        "\nMatch Host \"{}\"\n    IdentityFile {}",
         CA_TRUSTED_DOMAINS,
         key_path.to_str().ok_or(anyhow!("invalid utf-8 key path"))?
     );
