@@ -16,12 +16,16 @@ The Linux musl builds require a few dependencies to be installed; on Arch these 
 - musl
 - aarch64-linux-musl (AUR)
 
-To build the targets appropriate for your host platform, run `build.sh`. This will
-build the macOS targets on macOS and the Linux targets on Linux.
+To build the targets appropriate for your host platform, run `build.sh --release`.
+This will build the macOS targets on macOS and the Linux targets on Linux.
 
 In theory, we might want to cross-compile the macOS targets from Linux, but this
 seems to be a fairly finicky affair, and there is a Mac available for building, so
 this is not currently a priority.
+
+# Where to put releases?
+Since this repository is private, we can't really use GitHub releases to let students download `webtech-ssh`.
+Instead, the binaries are provided from the `webtech-admin` site, with a name corresponding to the specific target, e.g. `https://webtech-admin.datanose.nl/static/webtech-ssh.aarch64-unknown-linux-musl`. The script at `/static/webtech-ssh.sh` can then download the appropriate binary.
 
 # Usage
 Simply run `webtech-ssh`; it will do the rest automatically.
