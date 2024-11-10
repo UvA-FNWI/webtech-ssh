@@ -17,7 +17,7 @@ strip = true
 # On macOS, the standard aarch64-apple-darwin and x86_64-apple-darwin targets
 # are sufficient.
 [dependencies]
-reqwest = { version = "0.11", features = [
+reqwest = { version = "0.12", features = [
     "json",
     "rustls-tls",
 ], default-features = false }
