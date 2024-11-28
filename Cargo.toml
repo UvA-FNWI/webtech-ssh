@@ -1,6 +1,6 @@
 [package]
 name = "webtech-ssh"
-version = "0.1.8"
+version = "0.1.9"
 edition = "2021"
 
 [profile.release]
@@ -13,6 +13,7 @@ strip = true
 # In order to produce a statically linked yet reasonably small binary, we:
 # - use rustls instead of openssl
 # - compile for x86_64-unknown-linux-musl instead of -gnu
+# - set flags in .cargo/config.toml to force static linking
 #
 # On macOS, the standard aarch64-apple-darwin and x86_64-apple-darwin targets
 # are sufficient.
